@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { AddUpdateProductComponent } from ;
 
 @Component({
   selector: 'app-add-update-product',
@@ -11,9 +10,9 @@ import { AddUpdateProductComponent } from ;
   styleUrls: ['./add-update-product.component.scss'],
 })
 
-export class RegistroPage implements OnInit {
+export class AddUpdateProductComponent implements OnInit {
 
-  form = new FormGroup({
+  form = new FormGroup({ 
     id: new FormControl(''), 
     image: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
@@ -27,7 +26,6 @@ export class RegistroPage implements OnInit {
   user = {} as User
 
   ngOnInit() {
-    this.user = this.utilsSvc.getFromLocalStorage('user');
   }
 
   // Tomar/Seleccionar imagen //
