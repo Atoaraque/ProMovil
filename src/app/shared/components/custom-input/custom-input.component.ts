@@ -14,7 +14,7 @@ export class CustomInputComponent  implements OnInit {
   @Input() icon!: string;
 
   isPassword!: boolean;
-  hide: boolean =true;
+  hide: boolean = true;
 
   constructor() { }
 
@@ -23,7 +23,7 @@ export class CustomInputComponent  implements OnInit {
   }
 
   showOrHidePassword() {
-    this.hide = !this.hide
+    this.hide = !this.hide;
     if (this.hide) this.type = 'password';
     else this.type = 'text';
   }
