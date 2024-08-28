@@ -9,7 +9,7 @@ import { UtilsService } from 'src/app/services/utils.service';
 export class HeaderComponent  implements OnInit {
   @Input() title!: string;
   @Input() backButton: string;
-  @Input() IsModal: boolean;
+  @Input() isModal: boolean;
 
   utilsSvc = inject(UtilsService);
 

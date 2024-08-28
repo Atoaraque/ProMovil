@@ -1,9 +1,21 @@
-<app-header title="Inicio"></app-header>
+<ion-header title="Inicio"></ion-header>
 <ion-content>
   <!----====== Nuevo Producto ====== -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click) = "addUpdateProduct()">
+    <ion-fab-button (click)="addUpdateProduct()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
+</ion-content>
+
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>home</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button (click)="signOut()">
+    Cerrar Sesión
+  </ion-button>
 </ion-content>
