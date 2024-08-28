@@ -1,7 +1,11 @@
 <ion-header title="Inicio"></ion-header>
 
 <ion-content>
-
+  <ion-content [fullscreen]="true">
+    <ion-button (click)="signOut()">
+   Cerrar Sesión
+    </ion-button>
+  </ion-content>
   <ion-list>
     <ion-item-sliding class="product-item" *ngFor="let p of products"> 
       <ion-item>

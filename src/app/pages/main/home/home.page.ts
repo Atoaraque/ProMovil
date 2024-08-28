@@ -20,6 +20,11 @@ export class HomePage implements OnInit {
   ngOnInit() {
   }
 
+  // Cerrar sesión //
+  signOut(){
+    this.firebaseSvc.signOut();
+  }
+
   // user(): User {
   //  return this.utilsSvc.getFromLocalStorage('user'); 
 //  }
