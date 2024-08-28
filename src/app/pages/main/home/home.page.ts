@@ -22,24 +22,24 @@ export class HomePage implements OnInit {
 
   // user(): User {
   //  return this.utilsSvc.getFromLocalStorage('user'); 
-  // }
+//  }
 
-  ionViewWillEnter() {
-    this.getProducts();
-  }
+  //ionViewWillEnter() {
+  //  this.getProducts();
+  //}
 
   // Obtener productos //
-  getProducts() {
-    // let path = `users/${this.user().uid}/products`;
+  // getProducts() {
+  //  let path = `users/${this.user().uid}/products`;
 
-    // let sub = this.firebaseSvc.getCollectionData(path).subscribe({
-    //  next: (res: any) => {
-    //    console.log(res);
-    //  this.products = res;
-    //  sub.unsubscribe();
-    //  }
-    //  })
-  }
+  //  let sub = this.firebaseSvc.getCollectionData(path).subscribe({
+  //  next: (res: any) => {
+  //    console.log(res);
+  //    this.products = res;
+  //    sub.unsubscribe();
+  //    }
+  //    })
+//  }
 
   // Agregar o actualizar producto //
   addUpdateProduct() {
