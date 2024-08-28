@@ -3,11 +3,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
+
 @Component({
   selector: 'app-autenticacion',
   templateUrl: './autenticacion.page.html',
   styleUrls: ['./autenticacion.page.scss'],
 })
+
 export class AutenticacionPage implements OnInit {
 
   form = new FormGroup({
@@ -15,7 +17,7 @@ export class AutenticacionPage implements OnInit {
     password: new FormControl('', [Validators.required])
   })
 
-  firebaseSvc = inject(FirebaseService);
+  firebaseSvc = inject(FirebaseService)
 
   utilsSvc = inject(UtilsService)
 
@@ -28,8 +30,9 @@ export class AutenticacionPage implements OnInit {
       await loading.present();
 
       this.firebaseSvc.signIn(this.form.value as User).then(res => {
-        
-        this.getUserInfo(res.user.uid);
+        this.utilsSvc.saveInLocalStorage('user', this.form.value); 
+        this.utilsSvc.routerLink('/main/home');
+        this.form.reset();
       }).catch(error => {
         console.log(error);
         this.utilsSvc.presentToast({
@@ -44,8 +47,6 @@ export class AutenticacionPage implements OnInit {
         }
 
       )
-
-
     }
   }
   async getUserInfo(uid: string) {
@@ -84,9 +85,6 @@ export class AutenticacionPage implements OnInit {
         }
 
       )
-
-
     }
   }
-
 }

@@ -11,7 +11,6 @@ import { UtilsService } from 'src/app/services/utils.service';
 export class RecuPasswordPage implements OnInit {
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    
   })
 
   firebaseSvc = inject(FirebaseService);
@@ -48,9 +47,6 @@ export class RecuPasswordPage implements OnInit {
       }).finally(() => {
           loading.dismiss();
         }
-
       )
-
-
     }
   }}
