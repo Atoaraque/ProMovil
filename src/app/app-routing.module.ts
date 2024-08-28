@@ -8,7 +8,6 @@ const routes: Routes = [
     path: '',
     redirectTo: 'autenticacion',
     pathMatch: 'full'
-
   }
   ,
   {
@@ -19,11 +18,8 @@ const routes: Routes = [
     path: 'main',
     loadChildren: () => import('./pages/main/main.module').then( m => m.MainPageModule), canActivate:[AuthGuard]
   }
-
-
-
-
 ];
+
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

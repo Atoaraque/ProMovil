@@ -6,7 +6,7 @@ import { AddUpdateProductComponent } from 'src/app/shared/components/add-update-
 @Component({
   selector: "app-home",
   templateUrl: './home.page.html',
-  styleUrls: ['/home.page.scss'].
+  styleUrls: ['/home.page.scss'],
 })
 export class HomePage implements OnInit {
 
@@ -24,7 +24,7 @@ export class HomePage implements OnInit {
   // Agregar o actualizar producto //
   addUpdateProduct() {
     this.utilsSvc.presentModal({
-      component: AddUpdateProductComponent
+      component: AddUpdateProductComponent,
       cssClass: "add-updatemodal"
     })
   }

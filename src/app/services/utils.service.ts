@@ -7,13 +7,14 @@ import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
   providedIn: 'root'
 })
 export class UtilsService {
-  getFromLocalStorage(arg0: string): import("../models/user.model").User {
-    throw new Error('Method not implemented.');
-  }
+  // getFromLocalStorage(arg0: string): import("../models/user.model").User {
+  //  throw new Error('Method not implemented.');
+  // }
 
   loadingCtrl = inject(LoadingController);
   toastCtrl = inject(ToastController);
-  ModalCtrl = inject(ModalController) 
+  ModalCtrl = inject(ModalController);
+  router = inject(Router);
   
 async takePicture (promptLabelHeader: string) {
   return await Camera.getPhoto({
@@ -49,8 +50,7 @@ async takePicture (promptLabelHeader: string) {
   }
 
   // Obtener elemento desde el almacenamiento local //
-
-getFromLocalStorage(key: string, value:any){
-  return JSON.parse(localStorage.getItem(key)) 
-}
+  getFromLocalStorage(key: string, value:any){
+    return JSON.parse(localStorage.getItem(key)) 
+  }
 }

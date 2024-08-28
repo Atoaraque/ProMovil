@@ -29,7 +29,7 @@ export class AutenticacionPage implements OnInit {
       const loading = await this.utilsSvc.loading();
       await loading.present();
 
-      this.firebaseSvc.sigIn(this.form.value as User).then(res => {
+      this.firebaseSvc.signIn(this.form.value as User).then(res => {
         this.utilsSvc.saveInLocalStorage('user', this.form.value); 
         this.utilsSvc.routerLink('/main/home');
         this.form.reset();
@@ -47,8 +47,6 @@ export class AutenticacionPage implements OnInit {
         }
 
       )
-
-
     }
   }
   async getUserInfo(uid: string) {
@@ -87,9 +85,6 @@ export class AutenticacionPage implements OnInit {
         }
 
       )
-
-
     }
   }
-
 }
