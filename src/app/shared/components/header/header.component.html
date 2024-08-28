@@ -1,9 +1,15 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="primary">
+
+
+    <ion-buttons slot="start">
+      <ion-back-button *ngIf="backButton" [defaultHref]="backButton"></ion-back-button>
+    </ion-buttons>
+    
+
     <ion-title>
-      <strong>{{title}}   
-      </strong>
+      <strong>{{title}}</strong>
       <div class="admin">4N4</div>
-      </ion-title>
+    </ion-title>
   </ion-toolbar>
 </ion-header>
