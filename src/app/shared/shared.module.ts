@@ -5,8 +5,7 @@ import { CustomInputComponent } from './components/custom-input/custom-input.com
 import { LogoComponent } from './components/logo/logo.component';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-
+import { AddUpdateProductComponent } from './components/add-update-product/add-update-product.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     HeaderComponent,
     CustomInputComponent,
     LogoComponent,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AddUpdateProductComponent
   ],
   imports: [
     CommonModule,

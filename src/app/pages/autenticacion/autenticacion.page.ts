@@ -3,11 +3,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
+
 @Component({
   selector: 'app-autenticacion',
   templateUrl: './autenticacion.page.html',
   styleUrls: ['./autenticacion.page.scss'],
 })
+
 export class AutenticacionPage implements OnInit {
 
   form = new FormGroup({
@@ -16,7 +18,6 @@ export class AutenticacionPage implements OnInit {
   })
 
   firebaseSvc = inject(FirebaseService)
-
   utilsSvc = inject(UtilsService)
 
   ngOnInit() {
@@ -28,7 +29,9 @@ export class AutenticacionPage implements OnInit {
       await loading.present();
 
       this.firebaseSvc.sigIn(this.form.value as User).then(res => {
-        console.log(res);
+        this.utilsSvc.saveInLocalStorage('user', this.form.value); 
+        this.utilsSvc.routerLink('/main/home');
+        this.form.reset();
       }).catch(error => {
         console.log(error);
         this.utilsSvc.presentToast({
