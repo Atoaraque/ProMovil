@@ -1,21 +1,48 @@
 <ion-header title="Inicio"></ion-header>
+
 <ion-content>
-  <!----====== Nuevo Producto ====== -->
+
+  <ion-list>
+    <ion-item-sliding class="product-item" *ngFor="let p of products"> 
+      <ion-item>
+        <ion-avatar slot="start">
+          <img [src]="p.image" />
+        </ion-avatar>
+        <ion-label>
+          <div class="name">{{p.name}} </div>
+          <div class="data">
+            <strong>Precio:</strong> {{p.price | currency: 'USD'}} <br> 
+            <strong>Unidades Vendidas:</strong> {{p.soldUnits}}
+          </div>
+
+          <ion-chip color="primary" mode="ios" outline="true">
+            <ion-label>Ganancia: {{p.price * p.soldUnits | currency: 'USD' }}</ion-label>
+          </ion-chip>
+        </ion-label>
+      </ion-item>
+
+      <!--Opciones-->
+      <ion-item-options>
+
+        <!--Editar-->
+        <ion-item-option>
+          <ion-icon class="option-btn" name="create-outline"></ion-icon>
+        </ion-item-option>
+
+        <!-- Eliminar -->
+        <ion-item-option color="danger">
+          <ion-icon class="option-btn" name="trash-outline"></ion-icon>
+        </ion-item-option>
+
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <!-- Nuevo Producto -->
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addUpdateProduct()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-</ion-content>
 
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>home</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-button (click)="signOut()">
-    Cerrar Sesión
-  </ion-button>
 </ion-content>

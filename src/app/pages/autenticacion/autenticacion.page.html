@@ -1,35 +1,26 @@
 <app-header title="Login"></app-header>
 <ion-content>
-  
-<div class="d-flex-center">
 
-    <form [formGroup]="form" class="auth-form" (ngsubmit)="submit()" (keypress.enter)="submit()">
+  <div class="d-flex-center">
+
+    <form [formGroup]="form" class="auth-form" (ngSubmit)="submit()" (keypress.enter)="submit()">
 
       <app-logo></app-logo>
 
-      <app-custom-input 
-      autocomplete="email"
-      icon="mail-outline"
-      [control]="form.controls.email"
-      type="email"
-      label="Correo"
-      ></app-custom-input>
-  
+      <app-custom-input autocomplete="email" icon="mail-outline" [control]="form.controls.email" type="email"
+        label="Correo"></app-custom-input>
+
       <div class="validators" *ngIf="form.controls.email.errors && form.controls.email.touched">
-          <div *ngIf="form.controls.email.errors?.['required']">Este campo es obligatorio xd.</div>
-          <div *ngIf="form.controls.email.errors?.['email']">Introduce una dirección de email válida.
-          </div>
+        <div *ngIf="form.controls.email.errors?.['required']">Este campo es obligatorio xd.</div>
+        <div *ngIf="form.controls.email.errors?.['email']">Introduce una dirección de email válida.
+        </div>
       </div>
-      <app-custom-input 
-      [control]="form.controls.password"
-      icon="lock-closed-outline"
-      type="password"
-      label="Contraseña"
-      ></app-custom-input>
+      <app-custom-input [control]="form.controls.password" icon="lock-closed-outline" type="password"
+        label="Contraseña"></app-custom-input>
 
       <div class="validators" *ngIf="form.controls.password.errors && form.controls.password.touched">
         <div *ngIf="form.controls.password.errors?.['required']">Este campo es obligatorio.</div>
-        
+
       </div>
 
       <p routerLink="recu-password">¿Has olvidado tu contraseña?</p>
@@ -38,15 +29,13 @@
         Iniciar Sesión
         <ion-icon slot="end" name="log-in-outline"></ion-icon>
       </ion-button>
-       
-      
+
       <ion-button class="ion-margin-top" routerLink="registro" expand="block" mode="md" fill="outline">
         Registrate
         <ion-icon slot="end" name="person-add-outline"></ion-icon>
       </ion-button>
     </form>
-  
-</div>
-    
-</ion-content>
 
+  </div>
+
+</ion-content>

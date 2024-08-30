@@ -1,6 +1,6 @@
 <app-header title="Agregar Producto"></app-header>
 <ion-content>
-    <form [formGroup]="form" class="ion-padding ion-text-center" (ngsubmit)="submit()" (keypress.enter)="submit()">
+    <form [formGroup]="form" class="ion-padding ion-text-center" (ngSubmit)="submit()" (keypress.enter)="submit()">
 
         <!--Si existe una imagen-->
         <ion-avatar *ngIf="form.value.image">
