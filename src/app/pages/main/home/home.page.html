@@ -1,7 +1,7 @@
 <ion-header title="Inicio"></ion-header>
 
 <ion-content>
-  
+
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
@@ -61,7 +61,6 @@
     </ion-item>
 
   </ion-list>
-
 
   <!-- Sin productos disponibles -->
   <div *ngIf="!loading && !products.length" class="empty">
