@@ -2,6 +2,6 @@ export interface Product {
     name: string,
     soldUnits: number,
     price: number,
-    image: string
+    image: string,
     id: string
 }
