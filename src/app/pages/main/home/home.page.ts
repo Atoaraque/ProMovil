@@ -29,6 +29,13 @@ export class HomePage implements OnInit {
     this.getProducts();
   }
 
+  doRefresh(event) {
+    setTimeout(() => {
+      this.getProducts();
+      event.target.complete();
+    }, 1000);
+  }
+
   // Obtener productos //
   getProducts() {
     let path = `users/${this.user().uid}/products`;
