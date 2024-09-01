@@ -35,6 +35,18 @@
         <div *ngIf="form.controls.password.errors?.['required']">Este campo es obligatorio.</div>
 
       </div>
+      <!--Rol placeholder="Select a Fruit"-->
+      <ion-list>
+        <ion-item>
+          <ion-select>
+            <div slot="label">Rol<ion-text color="danger">(Required)</ion-text></div>
+            <ion-select-option value="comprar">Comprar</ion-select-option>
+            <ion-select-option value="vender">Vender</ion-select-option>
+          <!--<div *ngIf="form.controls.password.errors?.['required']">Este campo es obligatorio.</div>-->  
+          </ion-select>
+        </ion-item>
+      </ion-list>
+
 
       <ion-button expand="block" mode="md" class="submit" type="submit" [disabled]="form.invalid">
         Registrate
