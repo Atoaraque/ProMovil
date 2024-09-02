@@ -44,8 +44,8 @@ export class UtilsService {
   }
 
   // Enruta a cualquier pçagina disponible //
-  routerLink(url: string) {
-    return this.router.navigateByUrl(url);
+  routerLink(path: string) {
+    this.router.navigate([path]);
   }
 
   // Guarda un elemento en el almacenamiento local //
