@@ -30,9 +30,10 @@ export class FirebaseService {
 
   // Registrar //
   signUp(user: User) {
-    return createUserWithEmailAndPassword(getAuth(), user.email, user.password);
+    return createUserWithEmailAndPassword(getAuth(), user.email, user.password, user.role);
   }
 
+ 
   // Actualizar Usuario //
   updateUser(displayName: string) {
     return updateProfile(getAuth().currentUser, { displayName })

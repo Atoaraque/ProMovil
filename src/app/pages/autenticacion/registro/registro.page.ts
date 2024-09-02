@@ -16,6 +16,7 @@ export class RegistroPage implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    role: new FormControl('', [Validators.required]),
     
   })
 
@@ -27,37 +28,45 @@ export class RegistroPage implements OnInit {
   }
 
   async submit() {
-    if (this.form.valid) {
-      const loading = await this.utilsSvc.loading();
-      await loading.present();
+  if (this.form.valid) {
+    const loading = await this.utilsSvc.loading();
+    await loading.present();
 
-      this.firebaseSvc.signUp(this.form.value as User).then(async res => {
+    try {
+      const res = await this.firebaseSvc.signUp(this.form.value as User);
+      await this.firebaseSvc.updateUser(this.form.value.name);
 
-       await this.firebaseSvc.updateUser(this.form.value.name);
+      let uid = res.user.uid;
+      this.form.controls.uid.setValue(uid);
 
-       let uid = res.user.uid;
-       this.form.controls.uid.setValue(uid);
-       
-       this.setUserInfo(uid);
+      await this.setUserInfo(uid);
 
-      }).catch(error => {
-        console.log(error);
-        this.utilsSvc.presentToast({
-          message: error.message,
-          duration: 2500,
-          color: 'primary',
-          position: 'middle',
-          icon: 'alert-circle-outline'
-        })
-      }).finally(() => {
-          loading.dismiss();
-        }
+      // Obtener el rol seleccionado
+      const selectedRole = this.form.controls.role.value;
 
-      )
+      // Redirigir según el rol
+      if (selectedRole === 'comprador') {
+        this.utilsSvc.routerLink('main/cart'); // Redirige a Cart si es comprador
+      } else if (selectedRole === 'vendedor') {
+        this.utilsSvc.routerLink('main/home'); // Redirige a Home si es vendedor
+      }
 
-
+    } catch (error) {
+      console.log(error);
+      this.utilsSvc.presentToast({
+        message: error.message,
+        duration: 2500,
+        color: 'primary',
+        position: 'middle',
+        icon: 'alert-circle-outline'
+      });
+    } finally {
+      loading.dismiss();
     }
   }
+}
+  
+  
 
 
   async setUserInfo(uid: string) {
