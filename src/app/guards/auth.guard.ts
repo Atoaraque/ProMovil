@@ -8,27 +8,25 @@ import { UtilsService } from "../services/utils.service";
   providedIn: 'root'
 })
 
-export class AuthGuard implements CanActivate{
+export class AuthGuard implements CanActivate {
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
 
-canActivate(
-  route: ActivatedRouteSnapshot, 
-  state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean |UrlTree {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
     let user = localStorage.getItem('user');
     return new Promise((resolve) => {
-      this.firebaseSvc.getAuth().onAuthStateChanged((auth) =>{
-        if(auth){
+      this.firebaseSvc.getAuth().onAuthStateChanged((auth) => {
+        if (auth) {
           if (user) resolve(true);
         }
-        else{
-          this.utilsSvc.routerLink('/autenticacion');
+        else {
+          this.firebaseSvc.signOut()
           resolve(false);
         }
       })
     })
-    
-}
-
+  }
 }

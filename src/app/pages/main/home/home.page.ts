@@ -25,6 +25,7 @@ export class HomePage implements OnInit {
   user(): User {
     return this.utilsSvc.getFromLocalStorage('user');
   }
+  
   ionViewWillEnter() {
     this.getProducts();
   }
@@ -34,6 +35,11 @@ export class HomePage implements OnInit {
       this.getProducts();
       event.target.complete();
     }, 1000);
+  }
+
+  // Obtener ganancias //
+  getProfits() {
+    return this.products.reduce((index, product) => index + product.price * product.soldUnits, 0);
   }
 
   // Obtener productos //
