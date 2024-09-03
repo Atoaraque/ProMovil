@@ -31,11 +31,12 @@ export class RegistroPage implements OnInit {
       await loading.present();
 
       this.firebaseSvc.signUp(this.form.value as User).then(async res => {
+
         await this.firebaseSvc.updateUser(this.form.value.name);
 
         let uid = res.user.uid;
         this.form.controls.uid.setValue(uid);
-        
+
         this.setUserInfo(uid);
 
       }).catch(error => {
@@ -49,7 +50,7 @@ export class RegistroPage implements OnInit {
         });
       }).finally(() => {
         loading.dismiss();
-      });
+      })
     }
   }
 
@@ -78,6 +79,7 @@ export class RegistroPage implements OnInit {
 
         this.form.reset();
 
+
       }).catch(error => {
         console.log(error);
         this.utilsSvc.presentToast({
@@ -89,7 +91,7 @@ export class RegistroPage implements OnInit {
         });
       }).finally(() => {
         loading.dismiss();
-      });
+      })
     }
   }
 }
