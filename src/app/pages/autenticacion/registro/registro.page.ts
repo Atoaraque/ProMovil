@@ -74,7 +74,7 @@ export class RegistroPage implements OnInit {
         if (role === 'vendedor') {
           this.utilsSvc.routerLink('main/home');
         } else if (role === 'comprador') {
-          this.utilsSvc.routerLink('main/cart');
+          this.utilsSvc.routerLink('main/home-user');
         }
 
         this.form.reset();

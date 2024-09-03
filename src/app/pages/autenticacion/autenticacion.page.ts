@@ -60,10 +60,7 @@ export class AutenticacionPage implements OnInit {
         if (user.role === 'vendedor') {
           this.utilsSvc.routerLink('main/home');
         } else if (user.role === 'comprador') {
-          this.utilsSvc.routerLink('main/cart');
-        } else {
-          // Redirigir a una página por defecto si el rol no está definido
-          this.utilsSvc.routerLink('main/home');
+          this.utilsSvc.routerLink('main/home-user');
         }
 
         this.form.reset();

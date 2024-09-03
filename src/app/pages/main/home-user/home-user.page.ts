@@ -6,11 +6,11 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-cart',
-  templateUrl: './cart.page.html',
-  styleUrls: ['./cart.page.scss'],
+  selector: 'app-home-user',
+  templateUrl: './home-user.page.html',
+  styleUrls: ['./home-user.page.scss'],
 })
-export class CartPage implements OnInit, AfterViewInit {
+export class HomeUserPage implements OnInit, AfterViewInit {
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
 
