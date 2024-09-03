@@ -40,6 +40,14 @@ export class HomeUserPage implements OnInit, AfterViewInit {
     }, 1000);
   }
 
+  openCart() {
+    // Implementar lógica para abrir el carrito de compras
+  }
+
+  addToCart(product) {
+    // Implementar lógica para añadir el producto al carrito
+  }
+
   // Obtener todos los usuarios
   getAllUsers(): Observable<User[]> {
     return this.firebaseSvc.getAllCollectionData<User>('users');
