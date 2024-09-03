@@ -34,6 +34,27 @@
   <!-- Spinner de carga -->
   <ion-spinner *ngIf="loading" class="loading-spinner"></ion-spinner>
 
+  <ion-card mode="ios" color="none" class="d-flex-start" *ngIf="!loading && products.length">
+    <ion-grid>
+      <ion-row>
+        <ion-col size="6">Total Productos:</ion-col>
+        <ion-col size="6" class="ion-text-end">{{ totalAmount | currency: 'COP' }}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">Costo de Envío:</ion-col>
+        <ion-col size="6" class="ion-text-end">{{ shippingCost | currency: 'COP' }}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">IVA ({{ ivaPercentage * 1000 }}%):</ion-col>
+        <ion-col size="6" class="ion-text-end">{{ calculateIVA() | currency: 'COP' }}</ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">Total a Pagar:</ion-col>
+        <ion-col size="6" class="ion-text-end">{{ calculateGrandTotal() | currency: 'COP' }}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-card>  
+
   <!-- Botón de PayPal -->
   <div id="paypal-button-container"></div>
 </ion-content>

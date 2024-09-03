@@ -16,6 +16,9 @@ export class CartPage implements OnInit, AfterViewInit {
 
   products: Product[] = [];
   loading: boolean = false;
+  totalAmount: number = 0;
+  shippingCost: number = 5000; // Ajusta el costo de envío según sea necesario
+  ivaPercentage: number = 0.019;
 
   ngOnInit() {
     // Inicialización si es necesaria
@@ -38,14 +41,6 @@ export class CartPage implements OnInit, AfterViewInit {
       });
       event.target.complete();
     }, 1000);
-  }
-
-  openCart() {
-    // Implementar lógica para abrir el carrito de compras
-  }
-
-  addToCart(product) {
-    // Implementar lógica para añadir el producto al carrito
   }
 
   // Obtener todos los usuarios
@@ -73,6 +68,7 @@ export class CartPage implements OnInit, AfterViewInit {
             }
           });
 
+          this.totalAmount = this.calculateTotalAmount(); // Actualiza el total
           this.loading = false;
         },
         error: (error) => {
@@ -94,7 +90,7 @@ export class CartPage implements OnInit, AfterViewInit {
           return actions.order.create({
             purchase_units: [{
               amount: {
-                value: this.calculateTotalAmount()
+                value: this.calculateTotalAmount() + this.shippingCost + this.calculateIVA()
               }
             }]
           });
@@ -113,9 +109,15 @@ export class CartPage implements OnInit, AfterViewInit {
     }
   }
 
-  calculateTotalAmount(): string {
-    // Implementa la lógica para calcular el total basado en los productos en el carrito
-    const totalAmount = this.products.reduce((acc, product) => acc + product.price, 0);
-    return totalAmount.toFixed(2); // Asegúrate de que el formato sea compatible con PayPal
+  calculateTotalAmount(): number {
+    return this.products.reduce((acc, product) => acc + product.price, 0);
+  }
+
+  calculateIVA(): number {
+    return this.totalAmount * this.ivaPercentage;
+  }
+
+  calculateGrandTotal(): number {
+    return this.totalAmount + this.shippingCost + this.calculateIVA();
   }
 }

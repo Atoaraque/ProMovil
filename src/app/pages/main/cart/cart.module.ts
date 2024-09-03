@@ -15,7 +15,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     CommonModule,
     FormsModule,
     IonicModule,
-   CartPageRoutingModule,
+    CartPageRoutingModule,
     SharedModule
   ],
   declarations: [CartPage]
