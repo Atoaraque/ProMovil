@@ -2,10 +2,12 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { mapPage } from '../map/map.page';
+import { MapPage } from '../map/map.page';
 import { ExploreContainerComponentModule } from '../../../explore-container/explore-container.module';
 
 import { mapPageRoutingModule } from './map-routing.module';
+
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -13,9 +15,10 @@ import { mapPageRoutingModule } from './map-routing.module';
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    mapPageRoutingModule
+    mapPageRoutingModule,
+    SharedModule
   ],
-  declarations: [mapPage]
+  declarations: [MapPage]
 })
 export class mapPageModule {}
 
