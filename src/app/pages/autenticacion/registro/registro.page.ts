@@ -16,7 +16,7 @@ export class RegistroPage implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    
+
   })
 
   firebaseSvc = inject(FirebaseService)
@@ -33,12 +33,12 @@ export class RegistroPage implements OnInit {
 
       this.firebaseSvc.signUp(this.form.value as User).then(async res => {
 
-       await this.firebaseSvc.updateUser(this.form.value.name);
+        await this.firebaseSvc.updateUser(this.form.value.name);
 
-       let uid = res.user.uid;
-       this.form.controls.uid.setValue(uid);
-       
-       this.setUserInfo(uid);
+        let uid = res.user.uid;
+        this.form.controls.uid.setValue(uid);
+
+        this.setUserInfo(uid);
 
       }).catch(error => {
         console.log(error);
@@ -50,15 +50,10 @@ export class RegistroPage implements OnInit {
           icon: 'alert-circle-outline'
         })
       }).finally(() => {
-          loading.dismiss();
-        }
-
-      )
-
-
+        loading.dismiss();
+      })
     }
   }
-
 
   async setUserInfo(uid: string) {
     if (this.form.valid) {
@@ -73,7 +68,7 @@ export class RegistroPage implements OnInit {
         this.utilsSvc.saveInLocalStorage('user', this.form.value);
         this.utilsSvc.routerLink('main/home');
         this.form.reset();
-        
+
       }).catch(error => {
         console.log(error);
         this.utilsSvc.presentToast({
@@ -84,13 +79,8 @@ export class RegistroPage implements OnInit {
           icon: 'alert-circle-outline'
         })
       }).finally(() => {
-          loading.dismiss();
-        }
-
-      )
-
-
+        loading.dismiss();
+      })
     }
   }
-  
 }

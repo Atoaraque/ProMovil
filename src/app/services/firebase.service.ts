@@ -12,7 +12,7 @@ import { getStorage, uploadString, ref, getDownloadURL, deleteObject } from "fir
   providedIn: 'root'
 })
 export class FirebaseService {
-
+  
   auth = inject(AngularFireAuth);
   firestore = inject(AngularFirestore);
   storage = inject(AngularFireStorage);
