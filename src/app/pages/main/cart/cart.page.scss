@@ -33,4 +33,12 @@ ion-icon {
 .price-label {
   font-weight: bold;
 }
+ion-card {
+  margin: 0;
+  padding: 0;
+}
+.checkout-form {
+  padding: 16px;
+  min-height: 200px; /* Ajusta esto según sea necesario */
+}
 

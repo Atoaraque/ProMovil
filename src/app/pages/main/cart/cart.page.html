@@ -34,6 +34,34 @@
   <!-- Spinner de carga -->
   <ion-spinner *ngIf="loading" class="loading-spinner"></ion-spinner>
 
+  <!-- Formulario de Checkout -->
+  <div class="checkout-form">
+    <!-- Phone Field -->
+    <app-custom-input autocomplete="text" icon="call-outline" [control]="form.controls.phone" type="tel"
+      label="Teléfono"></app-custom-input>
+
+    <div class="validators" *ngIf="form.controls.phone.errors && form.controls.phone.touched">
+      <div *ngIf="form.controls.phone.errors?.['required']">Este campo es obligatorio.</div>
+      <div *ngIf="form.controls.phone.errors?.['pattern']">Introduce un número de teléfono válido.</div>
+    </div>
+
+    <!-- Conditional Address and City Fields -->
+    <app-custom-input autocomplete="text" icon="home-outline" [control]="form.controls.address" type="text"
+      label="Dirección de Envío"></app-custom-input>
+
+    <div class="validators" *ngIf="form.controls.address.errors && form.controls.address.touched">
+      <div *ngIf="form.controls.address.errors?.['required']">Este campo es obligatorio.</div>
+    </div>
+
+    <app-custom-input autocomplete="text" icon="pin-outline" [control]="form.controls.city" type="text"
+      label="Ciudad"></app-custom-input>
+
+    <div class="validators" *ngIf="form.controls.city.errors && form.controls.city.touched">
+      <div *ngIf="form.controls.city.errors?.['required']">Este campo es obligatorio.</div>
+    </div>
+  </div>
+
+  <!-- Resumen de costos -->
   <ion-card mode="ios" color="none" class="d-flex-start" *ngIf="!loading && products.length">
     <ion-grid>
       <ion-row>

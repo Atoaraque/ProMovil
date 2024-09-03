@@ -4,6 +4,7 @@ import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
 import { Observable } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-cart',
@@ -19,6 +20,15 @@ export class CartPage implements OnInit, AfterViewInit {
   totalAmount: number = 0;
   shippingCost: number = 5000; // Ajusta el costo de envío según sea necesario
   ivaPercentage: number = 0.019;
+
+  form = new FormGroup({
+    address: new FormControl('', Validators.required),
+    city: new FormControl('', Validators.required),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^\+?[1-9]\d{1,14}$/)
+    ])
+  });
 
   ngOnInit() {
     // Inicialización si es necesaria
@@ -77,6 +87,9 @@ export class CartPage implements OnInit, AfterViewInit {
         }
       });
     }
+  }
+
+  ngOnDestroy() {
   }
 
   ngAfterViewInit() {
