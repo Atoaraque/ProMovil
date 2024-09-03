@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { Component, OnInit, inject } from '@angular/core';
+import { Product } from 'src/app/models/product.model';
+import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
+import { UtilsService } from 'src/app/services/utils.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -8,15 +11,70 @@ import { FirebaseService } from 'src/app/services/firebase.service';
   styleUrls: ['./cart.page.scss'],
 })
 export class CartPage implements OnInit {
+  firebaseSvc = inject(FirebaseService);
+  utilsSvc = inject(UtilsService);
 
-  constructor(public menucontroler: MenuController, public firebaseService: FirebaseService) {
+  products: Product[] = [];
+  loading: boolean = false;
+
+  ngOnInit() {
+    // Inicialización si es necesaria
   }
-  ngOnInit() {}
 
-  openMenu() {
-  console.log('open menu');
-  this.menucontroler.toggle('principal');
+  ionViewWillEnter() {
+    this.getAllUsers().subscribe(users => {
+      if (users) {
+        this.getProductsForUsers(users);
+      }
+    });
   }
 
+  doRefresh(event) {
+    setTimeout(() => {
+      this.getAllUsers().subscribe(users => {
+        if (users) {
+          this.getProductsForUsers(users);
+        }
+      });
+      event.target.complete();
+    }, 1000);
+  }
+
+  // Obtener todos los usuarios
+
+getAllUsers(): Observable<User[]> {
+  return this.firebaseSvc.getAllCollectionData<User>('users');
 }
 
+// Obtener productos de todos los usuarios
+async getProductsForUsers(users: User[]) {
+  this.loading = true;
+  this.products = []; // Limpiar productos anteriores
+
+  // Usar un Set para evitar duplicados
+  const productSet = new Set<string>();
+
+  for (const user of users) {
+    const path = `users/${user.uid}/products`;
+
+    // No es necesario pasar un query vacío
+    this.firebaseSvc.getAllCollectionData<Product>(path).subscribe({
+      next: (res: Product[]) => {
+        // Filtrar productos para evitar duplicados
+        res.forEach((product) => {
+          if (!productSet.has(product.id)) {
+            this.products.push(product);
+            productSet.add(product.id);
+          }
+        });
+        
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.loading = false;
+      }
+    });
+  }
+}
+}
