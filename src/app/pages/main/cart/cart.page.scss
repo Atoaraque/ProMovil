@@ -39,6 +39,16 @@ ion-card {
 }
 .checkout-form {
   padding: 16px;
-  min-height: 200px; /* Ajusta esto según sea necesario */
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
+.centered-button {
+  align-self: center;
+}
+
+.centered-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

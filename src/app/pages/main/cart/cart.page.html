@@ -34,32 +34,35 @@
   <!-- Spinner de carga -->
   <ion-spinner *ngIf="loading" class="loading-spinner"></ion-spinner>
 
-  <!-- Formulario de Checkout -->
-  <div class="checkout-form">
-    <!-- Phone Field -->
-    <app-custom-input autocomplete="text" icon="call-outline" [control]="form.controls.phone" type="tel"
-      label="Teléfono"></app-custom-input>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Datos de Envío</ion-card-title>
+    </ion-card-header>
+    
+    <ion-card-content>
+      <form [formGroup]="form" (ngSubmit)="saveAddress()">
+        <ion-item>
+          <ion-label position="stacked">Dirección</ion-label>
+          <ion-input formControlName="address" placeholder="Ingresa tu dirección"></ion-input>
+        </ion-item>
 
-    <div class="validators" *ngIf="form.controls.phone.errors && form.controls.phone.touched">
-      <div *ngIf="form.controls.phone.errors?.['required']">Este campo es obligatorio.</div>
-      <div *ngIf="form.controls.phone.errors?.['pattern']">Introduce un número de teléfono válido.</div>
-    </div>
+        <ion-item>
+          <ion-label position="stacked">Ciudad</ion-label>
+          <ion-input formControlName="city" placeholder="Ingresa tu ciudad"></ion-input>
+        </ion-item>
 
-    <!-- Conditional Address and City Fields -->
-    <app-custom-input autocomplete="text" icon="home-outline" [control]="form.controls.address" type="text"
-      label="Dirección de Envío"></app-custom-input>
+        <ion-item>
+          <ion-label position="stacked">Teléfono</ion-label>
+          <ion-input formControlName="phone" placeholder="Ingresa tu número de teléfono" type="tel"></ion-input>
+        </ion-item>
 
-    <div class="validators" *ngIf="form.controls.address.errors && form.controls.address.touched">
-      <div *ngIf="form.controls.address.errors?.['required']">Este campo es obligatorio.</div>
-    </div>
-
-    <app-custom-input autocomplete="text" icon="pin-outline" [control]="form.controls.city" type="text"
-      label="Ciudad"></app-custom-input>
-
-    <div class="validators" *ngIf="form.controls.city.errors && form.controls.city.touched">
-      <div *ngIf="form.controls.city.errors?.['required']">Este campo es obligatorio.</div>
-    </div>
-  </div>
+        <!-- Botón de guardar dentro del formulario -->
+        <ion-button expand="block" type="submit" [disabled]="!form.valid">
+          Guardar
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
 
   <!-- Resumen de costos -->
   <ion-card mode="ios" color="none" class="d-flex-start" *ngIf="!loading && products.length">
@@ -68,7 +71,7 @@
         <ion-col size="6">Total Productos:</ion-col>
         <ion-col size="6" class="ion-text-end">{{ totalAmount | currency: 'USD' }}</ion-col>
       </ion-row>
-      <ion-row>
+      <ion-row *ngIf="formValid">
         <ion-col size="6">Costo de Envío:</ion-col>
         <ion-col size="6" class="ion-text-end">{{ shippingCost | currency: 'USD' }}</ion-col>
       </ion-row>

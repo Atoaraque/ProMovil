@@ -20,13 +20,14 @@ export class CartPage implements OnInit, AfterViewInit {
   totalAmount: number = 0;
   shippingCost: number = 5000; // Ajusta el costo de envío según sea necesario
   ivaPercentage: number = 0.019;
+  formValid: boolean = false; // Para controlar si el formulario es válido
 
   form = new FormGroup({
     address: new FormControl('', Validators.required),
     city: new FormControl('', Validators.required),
     phone: new FormControl('', [
       Validators.required,
-      Validators.pattern(/^\+?[1-9]\d{1,14}$/)
+      Validators.pattern(/^[0-9]{10}$/)
     ])
   });
 
@@ -103,7 +104,7 @@ export class CartPage implements OnInit, AfterViewInit {
           return actions.order.create({
             purchase_units: [{
               amount: {
-                value: this.calculateTotalAmount() + this.shippingCost + this.calculateIVA()
+                value: this.calculateTotalAmount() + (this.formValid ? this.shippingCost : 0) + this.calculateIVA()
               }
             }]
           });
@@ -131,6 +132,16 @@ export class CartPage implements OnInit, AfterViewInit {
   }
 
   calculateGrandTotal(): number {
-    return this.totalAmount + this.shippingCost + this.calculateIVA();
+    return this.totalAmount + (this.formValid ? this.shippingCost : 0) + this.calculateIVA();
+  }
+
+  saveAddress() {
+    if (this.form.valid) {
+      this.formValid = true;
+      this.form.disable(); // Deshabilitar el formulario
+      this.calculateGrandTotal(); // Actualizar el total con el costo de envío
+    } else {
+      alert('Por favor, completa todos los campos del formulario.');
+    }
   }
 }
