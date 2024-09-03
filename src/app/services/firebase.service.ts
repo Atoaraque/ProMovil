@@ -6,7 +6,8 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { getFirestore, setDoc, doc, getDoc, addDoc, collection, collectionData, query, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import { UtilsService } from './utils.service';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { getStorage, uploadString, ref, getDownloadURL, deleteObject } from "firebase/storage"
+import { getStorage, uploadString, ref, getDownloadURL, deleteObject } from "firebase/storage";
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -30,9 +31,10 @@ export class FirebaseService {
 
   // Registrar //
   signUp(user: User) {
-    return createUserWithEmailAndPassword(getAuth(), user.email, user.password);
+    return createUserWithEmailAndPassword(getAuth(), user.email, user.password, user.role);
   }
 
+ 
   // Actualizar Usuario //
   updateUser(displayName: string) {
     return updateProfile(getAuth().currentUser, { displayName })
@@ -57,6 +59,12 @@ export class FirebaseService {
     const ref = collection(getFirestore(), path);
     return collectionData(query(ref, ...collectionQuery), { idField: 'id' });
   }
+
+  // Obtener documentos de una colección //
+    getAllCollectionData<T>(path: string, collectionQuery: any[] = []): Observable<T[]> {
+      const ref = collection(getFirestore(), path);
+      return collectionData(query(ref, ...collectionQuery), { idField: 'id' }) as Observable<T[]>;
+    }
 
   // Setear un documento //
   setDocument(path: string, data: any) {

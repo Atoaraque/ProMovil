@@ -2,7 +2,7 @@
 
 <ion-header title="Inicio"></ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
 
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
@@ -21,29 +21,26 @@
 
   <!-- Productos -->
   <ion-list *ngIf="!loading">
-
     <ion-item-sliding class="product-item" *ngFor="let p of products">
       <ion-item>
         <ion-avatar slot="start">
           <img [src]="p.image" />
         </ion-avatar>
         <ion-label>
-          <div class="name">{{p.name}} </div>
+          <div class="name">{{p.name}}</div>
           <div class="data">
             <strong>Precio:</strong> {{p.price | currency: 'COP'}} <br>
             <strong>Unidades Vendidas:</strong> {{p.soldUnits}}
           </div>
-
           <ion-chip color="primary" mode="ios" outline="true">
             <ion-label>Ganancia: {{p.price * p.soldUnits | currency: 'COP' }}</ion-label>
           </ion-chip>
         </ion-label>
       </ion-item>
 
-      <!--Opciones-->
+      <!-- Opciones -->
       <ion-item-options>
-
-        <!--Editar-->
+        <!-- Editar -->
         <ion-item-option (click)="addUpdateProduct(p)">
           <ion-icon class="option-btn" name="create-outline"></ion-icon>
         </ion-item-option>
@@ -52,10 +49,8 @@
         <ion-item-option (click)="confirmDeleteProduct(p)" color="danger">
           <ion-icon class="option-btn" name="trash-outline"></ion-icon>
         </ion-item-option>
-
       </ion-item-options>
     </ion-item-sliding>
-
   </ion-list>
 
   <!-- Loading -->
@@ -72,7 +67,6 @@
         </div>
       </ion-label>
     </ion-item>
-
   </ion-list>
 
   <!-- Sin productos disponibles -->
@@ -87,5 +81,4 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-
 </ion-content>
