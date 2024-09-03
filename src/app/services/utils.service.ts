@@ -43,7 +43,7 @@ export class UtilsService {
     toast.present();
   }
 
-  // Enruta a cualquier pçagina disponible //
+  // Enruta a cualquier pagina disponible //
   routerLink(url: string) {
     return this.router.navigateByUrl(url);
   }
@@ -53,12 +53,9 @@ export class UtilsService {
     return localStorage.setItem(key, JSON.stringify(value));
   }
 
-  // Obtener elemento desde el almacenamiento local //
-  // getFromLocalStorage(key: string, value: any) {
-  //  return JSON.parse(localStorage.getItem(key))
-  //}
-  getFromLocalStorage(arg0: string): import("../models/user.model").User {
-    throw new Error('Method not implemented.');
+  // Obtiene un elemento desde el almacenamiento local //
+  getFromLocalStorage(key: string) {
+    return JSON.parse(localStorage.getItem(key))
   }
 
   // Modal

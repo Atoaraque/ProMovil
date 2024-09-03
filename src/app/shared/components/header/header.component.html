@@ -2,18 +2,21 @@
   <ion-toolbar color="primary">
 
     <ion-buttons slot="start">
-      <!---Back Button-->
-      <ion-back-button *ngIf="backButton" [defaultHref]="backButton"></ion-back-button>
 
-      <!--DissMiss Modal -->
-      <ion-button (click)="dissmissModal()" *ngIf="isModal">
+      <!-- ======== Back Button ======= -->
+      <ion-back-button *ngIf="backButton" defaultHref="backButton"></ion-back-button>
+      
+      <!-- ======== Dismiss Button ======= -->
+      <ion-button (click)="dismissModal()" *ngIf="isModal">
         <ion-icon name="close-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
 
     <ion-title>
-      <strong>{{title}}</strong>
-      <div class="admin">ADMINISTRADOR</div>
+      <strong>
+        {{title}}
+      </strong>
+      <div class="admin">Administrador</div>
     </ion-title>
   </ion-toolbar>
 </ion-header>
