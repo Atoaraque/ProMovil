@@ -4,12 +4,12 @@
     <ion-buttons slot="end">
       <ion-button (click)="openCart()" routerLink="cart">
         <ion-icon slot="icon-only" name="cart"></ion-icon>
+        <ion-badge *ngIf="cartItemCount > 0" color="danger">{{ cartItemCount }}</ion-badge>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
   <ion-searchbar [(ngModel)]="searchTerm" (ionInput)="filterProducts()"></ion-searchbar>
 </ion-header>
-
 
 <ion-content>
   <!-- Refrescador -->
@@ -26,7 +26,6 @@
         <div class="data">
           <strong>Precio:</strong> {{ p.price | currency: 'USD' }} <br>
           
-          <!-- Mostrar controles de cantidad solo si showQuantityControls es true -->
           <div class="quantity-controls" *ngIf="p.showQuantityControls">
             <ion-button (click)="decreaseQuantity(p)" [disabled]="p.quantity <= 0">-</ion-button>
             <span>{{ p.quantity }}</span>
@@ -36,6 +35,16 @@
         <ion-button expand="full" (click)="toggleQuantityControls(p)">Añadir al carrito</ion-button>
       </ion-card-content>
     </ion-card>
+  </div>
+
+<!-- Texto antes del mapa -->
+<div class="map-text" *ngIf="showMap && deliveryOption === 'tienda'">
+  <p>Puedes encontrarnos en nuestros puntos de venta aquí:</p>
+</div>
+
+
+  <div class="map-wrap" *ngIf="showMap && deliveryOption === 'tienda'">
+    <div class="map" #map></div>
   </div>
 
   <!-- Spinner de carga -->

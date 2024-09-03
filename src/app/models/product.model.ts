@@ -5,5 +5,6 @@ export interface Product {
     image: string,
     id: string,
     quantity: number,
-    showQuantityControls: boolean;
+    showQuantityControls: boolean,
+    inCart: boolean;
 }

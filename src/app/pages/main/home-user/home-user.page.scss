@@ -61,5 +61,22 @@ ion-header {
     margin-top: 10px;
   }
   
+  .map-wrap {
+    width: 100%;
+    height: 300px;  // Ensure this height is sufficient for the map to display
+    margin-top: 20px;  // Space between the form and the map
+  }
+   
+  .map {
+    width: 100%;
+    height: 100%;
+  }
+
+  .map-text {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
   
   
