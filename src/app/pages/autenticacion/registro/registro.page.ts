@@ -16,58 +16,42 @@ export class RegistroPage implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
-    role: new FormControl('', [Validators.required]),
-    
-  })
+    role: new FormControl('', [Validators.required]) // Agregado para el rol
+  });
 
-  firebaseSvc = inject(FirebaseService)
-
-  utilsSvc = inject(UtilsService)
+  firebaseSvc = inject(FirebaseService);
+  utilsSvc = inject(UtilsService);
 
   ngOnInit() {
   }
 
   async submit() {
-  if (this.form.valid) {
-    const loading = await this.utilsSvc.loading();
-    await loading.present();
+    if (this.form.valid) {
+      const loading = await this.utilsSvc.loading();
+      await loading.present();
 
-    try {
-      const res = await this.firebaseSvc.signUp(this.form.value as User);
-      await this.firebaseSvc.updateUser(this.form.value.name);
+      this.firebaseSvc.signUp(this.form.value as User).then(async res => {
+        await this.firebaseSvc.updateUser(this.form.value.name);
 
-      let uid = res.user.uid;
-      this.form.controls.uid.setValue(uid);
+        let uid = res.user.uid;
+        this.form.controls.uid.setValue(uid);
+        
+        this.setUserInfo(uid);
 
-      await this.setUserInfo(uid);
-
-      // Obtener el rol seleccionado
-      const selectedRole = this.form.controls.role.value;
-
-      // Redirigir según el rol
-      if (selectedRole === 'comprador') {
-        this.utilsSvc.routerLink('main/cart'); // Redirige a Cart si es comprador
-      } else if (selectedRole === 'vendedor') {
-        this.utilsSvc.routerLink('main/home'); // Redirige a Home si es vendedor
-      }
-
-    } catch (error) {
-      console.log(error);
-      this.utilsSvc.presentToast({
-        message: error.message,
-        duration: 2500,
-        color: 'primary',
-        position: 'middle',
-        icon: 'alert-circle-outline'
+      }).catch(error => {
+        console.log(error);
+        this.utilsSvc.presentToast({
+          message: error.message,
+          duration: 2500,
+          color: 'primary',
+          position: 'middle',
+          icon: 'alert-circle-outline'
+        });
+      }).finally(() => {
+        loading.dismiss();
       });
-    } finally {
-      loading.dismiss();
     }
   }
-}
-  
-  
-
 
   async setUserInfo(uid: string) {
     if (this.form.valid) {
@@ -77,12 +61,23 @@ export class RegistroPage implements OnInit {
       let path = `users/${uid}`;
       delete this.form.value.password;
 
-      this.firebaseSvc.setDocument(path, this.form.value).then(async res => {
-
+      this.firebaseSvc.setDocument(path, this.form.value).then(async () => {
+        // Guardar en el local storage
         this.utilsSvc.saveInLocalStorage('user', this.form.value);
-        this.utilsSvc.routerLink('main/home');
-        this.form.reset();
         
+        // Obtener el rol del usuario
+        let userDoc = await this.firebaseSvc.getDocument(path);
+        let role = userDoc?.['role'];
+
+        // Redirigir según el rol
+        if (role === 'vendedor') {
+          this.utilsSvc.routerLink('main/home');
+        } else if (role === 'comprador') {
+          this.utilsSvc.routerLink('main/cart');
+        }
+
+        this.form.reset();
+
       }).catch(error => {
         console.log(error);
         this.utilsSvc.presentToast({
@@ -91,15 +86,10 @@ export class RegistroPage implements OnInit {
           color: 'primary',
           position: 'middle',
           icon: 'alert-circle-outline'
-        })
+        });
       }).finally(() => {
-          loading.dismiss();
-        }
-
-      )
-
-
+        loading.dismiss();
+      });
     }
   }
-  
 }
