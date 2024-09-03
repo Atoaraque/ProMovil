@@ -16,12 +16,12 @@ export class RegistroPage implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required]),
     name: new FormControl('', [Validators.required, Validators.minLength(4)]),
-  })
- 
-  firebaseSvc = inject(FirebaseService)
- 
-  utilsSvc = inject(UtilsService)
- 
+    role: new FormControl('', [Validators.required]) // Agregado para el rol
+  });
+
+  firebaseSvc = inject(FirebaseService);
+  utilsSvc = inject(UtilsService);
+
   ngOnInit() {
   }
  
@@ -29,15 +29,15 @@ export class RegistroPage implements OnInit {
     if (this.form.valid) {
       const loading = await this.utilsSvc.loading();
       await loading.present();
- 
+
       this.firebaseSvc.signUp(this.form.value as User).then(async res => {
- 
-       await this.firebaseSvc.updateUser(this.form.value.name);
- 
-       let uid = res.user.uid;
-       this.form.controls.uid.setValue(uid);
-       this.setUserInfo(uid);
- 
+        await this.firebaseSvc.updateUser(this.form.value.name);
+
+        let uid = res.user.uid;
+        this.form.controls.uid.setValue(uid);
+        
+        this.setUserInfo(uid);
+
       }).catch(error => {
         console.log(error);
         this.utilsSvc.presentToast({
@@ -46,18 +46,13 @@ export class RegistroPage implements OnInit {
           color: 'primary',
           position: 'middle',
           icon: 'alert-circle-outline'
-        })
+        });
       }).finally(() => {
-          loading.dismiss();
-        }
- 
-      )
- 
- 
+        loading.dismiss();
+      });
     }
   }
- 
- 
+
   async setUserInfo(uid: string) {
     if (this.form.valid) {
       const loading = await this.utilsSvc.loading();
@@ -66,11 +61,24 @@ export class RegistroPage implements OnInit {
       let path = `users/${uid}`;
       delete this.form.value.password;
  
-      this.firebaseSvc.setDocument(path, this.form.value).then(async res => {
- 
+
+      this.firebaseSvc.setDocument(path, this.form.value).then(async () => {
+        // Guardar en el local storage
         this.utilsSvc.saveInLocalStorage('user', this.form.value);
-        this.utilsSvc.routerLink('main/home');
+        
+        // Obtener el rol del usuario
+        let userDoc = await this.firebaseSvc.getDocument(path);
+        let role = userDoc?.['role'];
+
+        // Redirigir según el rol
+        if (role === 'vendedor') {
+          this.utilsSvc.routerLink('main/home');
+        } else if (role === 'comprador') {
+          this.utilsSvc.routerLink('main/cart');
+        }
+
         this.form.reset();
+
       }).catch(error => {
         console.log(error);
         this.utilsSvc.presentToast({
@@ -79,7 +87,7 @@ export class RegistroPage implements OnInit {
           color: 'primary',
           position: 'middle',
           icon: 'alert-circle-outline'
-        })
+        });
       }).finally(() => {
           loading.dismiss();
         }
@@ -89,4 +97,5 @@ export class RegistroPage implements OnInit {
  
     }
   }
+  
 }

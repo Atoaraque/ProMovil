@@ -9,18 +9,15 @@ import { UtilsService } from 'src/app/services/utils.service';
   templateUrl: './autenticacion.page.html',
   styleUrls: ['./autenticacion.page.scss'],
 })
-
 export class AutenticacionPage implements OnInit {
 
   form = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required]),
-    role: new FormControl('', [Validators.required])
-  })
+    password: new FormControl('', [Validators.required])
+  });
 
-  firebaseSvc = inject(FirebaseService)
-
-  utilsSvc = inject(UtilsService)
+  firebaseSvc = inject(FirebaseService);
+  utilsSvc = inject(UtilsService);
 
   ngOnInit() {
   }
@@ -30,10 +27,10 @@ export class AutenticacionPage implements OnInit {
       const loading = await this.utilsSvc.loading();
       await loading.present();
 
-      this.firebaseSvc.signIn(this.form.value as User).then(res => {
-        this.utilsSvc.saveInLocalStorage('user', this.form.value); 
-        this.utilsSvc.routerLink('/main/home');
-        this.form.reset();
+      this.firebaseSvc.signIn(this.form.value as User).then(async (res) => {
+        const uid = res.user.uid;
+        await this.getUserInfo(uid); // Obtener información del usuario y redirigir
+
       }).catch(error => {
         console.log(error);
         this.utilsSvc.presentToast({
@@ -42,14 +39,13 @@ export class AutenticacionPage implements OnInit {
           color: 'primary',
           position: 'middle',
           icon: 'alert-circle-outline'
-        })
+        });
       }).finally(() => {
-          loading.dismiss();
-        }
-
-      )
+        loading.dismiss();
+      });
     }
   }
+
   async getUserInfo(uid: string) {
     if (this.form.valid) {
       const loading = await this.utilsSvc.loading();
@@ -57,11 +53,19 @@ export class AutenticacionPage implements OnInit {
 
       let path = `users/${uid}`;
 
-
       this.firebaseSvc.getDocument(path).then((user: User) => {
-
         this.utilsSvc.saveInLocalStorage('user', user);
-        this.utilsSvc.routerLink('main/home');
+
+        // Redirigir según el rol
+        if (user.role === 'vendedor') {
+          this.utilsSvc.routerLink('main/home');
+        } else if (user.role === 'comprador') {
+          this.utilsSvc.routerLink('main/cart');
+        } else {
+          // Redirigir a una página por defecto si el rol no está definido
+          this.utilsSvc.routerLink('main/home');
+        }
+
         this.form.reset();
 
         this.utilsSvc.presentToast({
@@ -69,9 +73,9 @@ export class AutenticacionPage implements OnInit {
           duration: 2500,
           color: 'primary',
           position: 'middle',
-          icon: 'alert-circle-outline'
-        })
-        
+          icon: 'person-circle-outline'
+        });
+
       }).catch(error => {
         console.log(error);
         this.utilsSvc.presentToast({
@@ -80,12 +84,10 @@ export class AutenticacionPage implements OnInit {
           color: 'primary',
           position: 'middle',
           icon: 'person-circle-outline'
-        })
+        });
       }).finally(() => {
-          loading.dismiss();
-        }
-
-      )
+        loading.dismiss();
+      });
     }
   }
 }
