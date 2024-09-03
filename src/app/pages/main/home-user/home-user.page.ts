@@ -130,32 +130,7 @@ export class HomeUserPage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.loadPayPalButton();
     this.initializeMap(); // Inicializar el mapa después de que la vista esté lista
-  }
-
-  loadPayPalButton() {
-    if (window['paypal'] !== undefined) {
-      window['paypal'].Buttons({
-        createOrder: (data, actions) => {
-          return actions.order.create({
-            purchase_units: [{
-              amount: {
-                value: this.calculateTotalAmount()
-              }
-            }]
-          });
-        },
-        onApprove: (data, actions) => {
-          return actions.order.capture().then((details) => {
-            alert('Transaction completed by ' + details.payer.name.given_name);
-          });
-        },
-        onError: (err) => {
-          console.error(err);
-        }
-      }).render('#paypal-button-container');
-    }
   }
 
   calculateTotalAmount(): string {
