@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- Botón de retroceso -->
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="main/home-user"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Carrito</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Refrescador -->
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Lista de productos -->
+  <ion-list>
+    <ion-item-sliding class="product-item" *ngFor="let p of products">
+      <ion-item>
+        <ion-avatar slot="start">
+          <img [src]="p.image" />
+        </ion-avatar>
+        <ion-label>
+          <div class="name">{{ p.name }}</div>
+          <div class="data">
+            <strong class="price">{{ p.price | currency: 'COP' }}</strong>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-item-sliding>
+  </ion-list>
+
+  <!-- Spinner de carga -->
+  <ion-spinner *ngIf="loading" class="loading-spinner"></ion-spinner>
+
+  <!-- Botón de PayPal -->
+  <div id="paypal-button-container"></div>
+</ion-content>

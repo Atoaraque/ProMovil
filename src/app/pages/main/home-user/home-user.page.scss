@@ -1,9 +1,32 @@
+/* Estilo para el encabezado */
+ion-header {
+    --background: #003366; /* Color de fondo azul oscuro */
+  }
+  
+  ion-toolbar {
+    --background: #003366; /* Asegúrate de que el color de fondo se aplique también al toolbar */
+    --color: #ffffff; /* Color del texto blanco */
+  }
+  
+  ion-title {
+    font-weight: bold; /* Texto en negrita */
+  }
+  
+  ion-button {
+    --color: #ffffff; /* Color del texto del botón y del icono blanco */
+  }
+  
+  /* Opcional: si quieres cambiar el color del icono en el botón del carrito */
+  ion-icon {
+    color: #ffffff; /* Color del icono blanco */
+  }  
+  
 /* Estilo para el contenedor de productos en dos columnas */
 .product-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr); /* Dos columnas de igual tamaño */
-    gap: 16px; /* Espacio entre los elementos */
-    padding: 16px;
+    gap: 12px; /* Espacio entre los elementos */
+    padding: 12px;
   }
   
   /* Estilo para las tarjetas de productos */
@@ -16,7 +39,7 @@
   
   .product-image {
     width: 100%;
-    height: 200px; /* Tamaño fijo para las imágenes */
+    height: 190px; /* Tamaño fijo para las imágenes */
     object-fit: cover; /* Asegura que la imagen cubra el área sin deformarse */
   }
   
@@ -37,5 +60,6 @@
   ion-button {
     margin-top: 10px;
   }
+  
   
   

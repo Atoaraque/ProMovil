@@ -6,11 +6,11 @@ import { UtilsService } from 'src/app/services/utils.service';
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-home-user',
-  templateUrl: './home-user.page.html',
-  styleUrls: ['./home-user.page.scss'],
+  selector: 'app-cart',
+  templateUrl: './cart.page.html',
+  styleUrls: ['./cart.page.scss'],
 })
-export class HomeUserPage implements OnInit {
+export class CartPage implements OnInit, AfterViewInit {
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
 
@@ -41,7 +41,7 @@ export class HomeUserPage implements OnInit {
   }
 
   openCart() {
-    this.utilsSvc.routerLink('main/cart'); // Redirige a la página del carrito
+    // Implementar lógica para abrir el carrito de compras
   }
 
   addToCart(product) {
@@ -81,5 +81,41 @@ export class HomeUserPage implements OnInit {
         }
       });
     }
+  }
+
+  ngAfterViewInit() {
+    this.loadPayPalButton();
+  }
+
+  loadPayPalButton() {
+    if (window['paypal'] !== undefined) {
+      window['paypal'].Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: this.calculateTotalAmount()
+              }
+            }]
+          });
+        },
+        onApprove: (data, actions) => {
+          return actions.order.capture().then((details) => {
+            alert('Transaction completed by ' + details.payer.name.given_name);
+            // Aquí puedes realizar acciones adicionales después de la transacción
+          });
+        },
+        onError: (err) => {
+          console.error(err);
+          // Manejo de errores
+        }
+      }).render('#paypal-button-container');
+    }
+  }
+
+  calculateTotalAmount(): string {
+    // Implementa la lógica para calcular el total basado en los productos en el carrito
+    const totalAmount = this.products.reduce((acc, product) => acc + product.price, 0);
+    return totalAmount.toFixed(2); // Asegúrate de que el formato sea compatible con PayPal
   }
 }
