@@ -52,7 +52,7 @@ export class HomeUserPage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openCart() {
-    // Implementar lógica para abrir el carrito de compras
+    this.utilsSvc.routerLink('main/cart'); // Redirige a la página del carrito
   }
 
   filterProducts() {
