@@ -24,7 +24,7 @@
       <ion-card-content>
         <div class="name">{{ p.name }}</div>
         <div class="data">
-          <strong>Precio:</strong> {{ p.price | currency: 'COP' }} <br>
+          <strong>Precio:</strong> {{ p.price | currency: 'USD' }} <br>
           
           <!-- Mostrar controles de cantidad solo si showQuantityControls es true -->
           <div class="quantity-controls" *ngIf="p.showQuantityControls">
