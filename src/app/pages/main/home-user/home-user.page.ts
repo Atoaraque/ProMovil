@@ -3,22 +3,21 @@ import { Product } from 'src/app/models/product.model';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs'; 
 
 @Component({
-  selector: 'app-cart',
-  templateUrl: './cart.page.html',
-  styleUrls: ['./cart.page.scss'],
+  selector: 'app-home-user',
+  templateUrl: './home-user.page.html',
+  styleUrls: ['./home-user.page.scss'],
 })
-export class CartPage implements OnInit, AfterViewInit {
+export class HomeUserPage implements OnInit {
   firebaseSvc = inject(FirebaseService);
   utilsSvc = inject(UtilsService);
 
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   loading: boolean = false;
-  totalAmount: number = 0;
-  shippingCost: number = 5000; // Ajusta el costo de envío según sea necesario
-  ivaPercentage: number = 0.019;
+  searchTerm: string = '';
 
   ngOnInit() {
     // Inicialización si es necesaria
@@ -43,6 +42,37 @@ export class CartPage implements OnInit, AfterViewInit {
     }, 1000);
   }
 
+  openCart() {
+    this.utilsSvc.routerLink('main/cart'); // Redirige a la página del carrito
+  }
+
+  addToCart(product: Product) {
+    // Implementar lógica para añadir el producto al carrito
+    // Aquí puedes agregar la lógica para añadir el producto con la cantidad actual al carrito
+    console.log(`Añadido al carrito: ${product.name}, Cantidad: ${product.quantity || 0}`);
+  }
+
+  increaseQuantity(product: Product) {
+    if (product.quantity === undefined) {
+      product.quantity = 1;
+    } else {
+      product.quantity += 1;
+    }
+  }
+
+  decreaseQuantity(product: Product) {
+    if (product.quantity && product.quantity > 0) {
+      product.quantity -= 1;
+    }
+  }
+
+  toggleQuantityControls(product: Product) {
+    product.showQuantityControls = !product.showQuantityControls;
+    if (!product.showQuantityControls) {
+      product.quantity = 0; // Restablecer la cantidad a 0 cuando se ocultan los controles
+    }
+  }
+
   // Obtener todos los usuarios
   getAllUsers(): Observable<User[]> {
     return this.firebaseSvc.getAllCollectionData<User>('users');
@@ -51,9 +81,8 @@ export class CartPage implements OnInit, AfterViewInit {
   // Obtener productos de todos los usuarios
   async getProductsForUsers(users: User[]) {
     this.loading = true;
-    this.products = []; // Limpiar productos anteriores
-
-    // Usar un Set para evitar duplicados
+    this.products = [];
+    this.filteredProducts = [];
     const productSet = new Set<string>();
 
     for (const user of users) {
@@ -67,8 +96,7 @@ export class CartPage implements OnInit, AfterViewInit {
               productSet.add(product.id);
             }
           });
-
-          this.totalAmount = this.calculateTotalAmount(); // Actualiza el total
+          this.filteredProducts = [...this.products]; // Inicializar productos filtrados
           this.loading = false;
         },
         error: (error) => {
@@ -76,6 +104,16 @@ export class CartPage implements OnInit, AfterViewInit {
           this.loading = false;
         }
       });
+    }
+  }
+
+  filterProducts() {
+    if (this.searchTerm.trim() === '') {
+      this.filteredProducts = [...this.products];
+    } else {
+      this.filteredProducts = this.products.filter(product =>
+        product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
     }
   }
 
@@ -90,7 +128,7 @@ export class CartPage implements OnInit, AfterViewInit {
           return actions.order.create({
             purchase_units: [{
               amount: {
-                value: this.calculateTotalAmount() + this.shippingCost + this.calculateIVA()
+                value: this.calculateTotalAmount()
               }
             }]
           });
@@ -109,16 +147,9 @@ export class CartPage implements OnInit, AfterViewInit {
     }
   }
 
-  calculateTotalAmount(): number {
-    return this.products.reduce((acc, product) => acc + product.price, 0);
-  }
-
-  calculateIVA(): number {
-    return this.totalAmount * this.ivaPercentage;
-  }
-
-  calculateGrandTotal(): number {
-    return this.totalAmount + this.shippingCost + this.calculateIVA();
+  calculateTotalAmount(): string {
+    // Implementa la lógica para calcular el total basado en los productos en el carrito
+    const totalAmount = this.products.reduce((acc, product) => acc + product.price, 0);
+    return totalAmount.toFixed(2); // Asegúrate de que el formato sea compatible con PayPal
   }
 }
-

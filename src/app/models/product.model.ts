@@ -3,5 +3,7 @@ export interface Product {
     soldUnits: number,
     price: number,
     image: string,
-    id: string
+    id: string,
+    quantity: number,
+    showQuantityControls: boolean;
 }

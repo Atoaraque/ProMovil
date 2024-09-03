@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
 import { Component, Input, OnInit, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Product } from 'src/app/models/product.model';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.page.html',
@@ -12,59 +10,55 @@ import { UtilsService } from 'src/app/services/utils.service';
 })
 export class ProfilePage implements OnInit {
 
-  firebaseSvc = inject(FirebaseService)
-  utilsSvc = inject(UtilsService)
+  firebaseSvc = inject(FirebaseService);
+  utilsSvc = inject(UtilsService);
   
-
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   user(): User {
     return this.utilsSvc.getFromLocalStorage('user');
   }
-   // Tomar/Seleccionar imagen //
-   async takeImage() {
-    let user = this.user();
 
+  // Tomar/Seleccionar imagen //
+  async takeImage() {
+    let user = this.user();
     let path = `users/${user.uid}/profile`;
 
-    
+    try {
+      const dataUrl = (await this.utilsSvc.takePicture('Imagen del perfil')).dataUrl;
 
-    const dataUrl = (await this.utilsSvc.takePicture('Imagen del perfil')).dataUrl;
-    
-    const loading = await this.utilsSvc.loading();
-    await loading.present();
+      const loading = await this.utilsSvc.loading();
+      await loading.present();
 
-    let imagePath = `${user.uid}/profile`;
-    user.image = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
-  
+      let imagePath = `${user.uid}/profile`;
+      user.image = await this.firebaseSvc.uploadImage(imagePath, dataUrl);
+
+      await this.firebaseSvc.updateDocument(path, { image: user.image });
+
+      this.utilsSvc.saveInLocalStorage('user', user);
+
+      this.utilsSvc.presentToast({
+        message: 'Imagen actualizada exitosamente',
+        duration: 1500,
+        color: 'success',
+        position: 'middle',
+        icon: 'checkmark-circle-outline'
+      });
+
+    } catch (error) {
+      console.log(error);
+
+      this.utilsSvc.presentToast({
+        message: error.message,
+        duration: 2500,
+        color: 'primary',
+        position: 'middle',
+        icon: 'alert-circle-outline'
+      });
+
+    } finally {
+      const loading = await this.utilsSvc.loading();
+      loading.dismiss();
+    }
   }
-
-  this.firebaseSvc.updateDocument(path, {image: user.image}).then(async res => {
-
-    this.UtilsService.saveInLocalStorage('user',user);
-
-    this.utilsSvc.presentToast({
-      message: 'Imagen actualizada exitosamente',
-      duration: 1500,
-      color: 'success',
-      position: 'middle',
-      icon: 'checkmark-circle-outline'
-    })
-
-  }).catch(error => {
-    console.log(error);
-
-    this.utilsSvc.presentToast({
-      message: error.message,
-      duration: 2500,
-      color: 'primary',
-      position: 'middle',
-      icon: 'alert-circle-outline'
-    })
-
-  }).finally(() => {
-    loading.dismiss();
-  }
-
 }

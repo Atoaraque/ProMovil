@@ -26,7 +26,7 @@ export class AddUpdateProductComponent implements OnInit {
   firebaseSvc = inject(FirebaseService)
   utilsSvc = inject(UtilsService)
 
-  user = {} as User
+  user = {} as User;
 
   ngOnInit() {
     this.user = this.utilsSvc.getFromLocalStorage('user'); 
@@ -74,7 +74,7 @@ export class AddUpdateProductComponent implements OnInit {
 
     this.firebaseSvc.addDocument(path, this.form.value).then(async res => {
 
-      this.utilsSvc.dismissModal({ success: true })
+      this.utilsSvc.dismissModal({ success: true });
 
       this.utilsSvc.presentToast({
         message: 'Producto creado exitosamente',

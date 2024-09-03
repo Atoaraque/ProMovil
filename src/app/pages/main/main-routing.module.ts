@@ -23,7 +23,11 @@ const routes: Routes = [
   {
     path: 'map',
     loadChildren: () => import('./map/map.module').then( m => m.mapPageModule)
+  },  {
+    path: 'home-user',
+    loadChildren: () => import('./home-user/home-user.module').then( m => m.HomeUserPageModule)
   }
+
 
 ];
 

@@ -1,0 +1,35 @@
+/* Estilo para el encabezado */
+ion-header {
+    --background: #003366; /* Color de fondo azul oscuro */
+  }
+  
+  ion-toolbar {
+    --background: #003366; /* Asegúrate de que el color de fondo se aplique también al toolbar */
+    --color: #ffffff; /* Color del texto blanco */
+  }
+  
+  ion-title {
+    font-weight: bold; /* Texto en negrita */
+  }
+  
+  ion-button {
+    --color: #ffffff; /* Color del texto del botón y del icono blanco */
+  }
+  
+  /* Opcional: si quieres cambiar el color del icono en el botón del carrito */
+  ion-icon {
+    color: #ffffff; /* Color del icono blanco */
+  }  
+  .d-flex-start {
+    display: flex;
+    justify-content: flex-start;
+  }
+  
+  .price {
+    float: right;
+    font-size: 1.2em; /* Ajusta el tamaño de la fuente según tus necesidades */
+  }
+  
+  .price-label {
+    font-weight: bold;
+  }
