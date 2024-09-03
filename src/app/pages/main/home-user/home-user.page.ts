@@ -3,7 +3,7 @@ import { Product } from 'src/app/models/product.model';
 import { User } from 'src/app/models/user.model';
 import { FirebaseService } from 'src/app/services/firebase.service';
 import { UtilsService } from 'src/app/services/utils.service';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs'; 
 
 @Component({
   selector: 'app-home-user',
@@ -15,7 +15,9 @@ export class HomeUserPage implements OnInit {
   utilsSvc = inject(UtilsService);
 
   products: Product[] = [];
+  filteredProducts: Product[] = [];
   loading: boolean = false;
+  searchTerm: string = '';
 
   ngOnInit() {
     // Inicialización si es necesaria
@@ -44,8 +46,31 @@ export class HomeUserPage implements OnInit {
     this.utilsSvc.routerLink('main/cart'); // Redirige a la página del carrito
   }
 
-  addToCart(product) {
+  addToCart(product: Product) {
     // Implementar lógica para añadir el producto al carrito
+    // Aquí puedes agregar la lógica para añadir el producto con la cantidad actual al carrito
+    console.log(`Añadido al carrito: ${product.name}, Cantidad: ${product.quantity || 0}`);
+  }
+
+  increaseQuantity(product: Product) {
+    if (product.quantity === undefined) {
+      product.quantity = 1;
+    } else {
+      product.quantity += 1;
+    }
+  }
+
+  decreaseQuantity(product: Product) {
+    if (product.quantity && product.quantity > 0) {
+      product.quantity -= 1;
+    }
+  }
+
+  toggleQuantityControls(product: Product) {
+    product.showQuantityControls = !product.showQuantityControls;
+    if (!product.showQuantityControls) {
+      product.quantity = 0; // Restablecer la cantidad a 0 cuando se ocultan los controles
+    }
   }
 
   // Obtener todos los usuarios
@@ -56,9 +81,8 @@ export class HomeUserPage implements OnInit {
   // Obtener productos de todos los usuarios
   async getProductsForUsers(users: User[]) {
     this.loading = true;
-    this.products = []; // Limpiar productos anteriores
-
-    // Usar un Set para evitar duplicados
+    this.products = [];
+    this.filteredProducts = [];
     const productSet = new Set<string>();
 
     for (const user of users) {
@@ -72,7 +96,7 @@ export class HomeUserPage implements OnInit {
               productSet.add(product.id);
             }
           });
-
+          this.filteredProducts = [...this.products]; // Inicializar productos filtrados
           this.loading = false;
         },
         error: (error) => {
@@ -81,5 +105,51 @@ export class HomeUserPage implements OnInit {
         }
       });
     }
+  }
+
+  filterProducts() {
+    if (this.searchTerm.trim() === '') {
+      this.filteredProducts = [...this.products];
+    } else {
+      this.filteredProducts = this.products.filter(product =>
+        product.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
+  }
+
+  ngAfterViewInit() {
+    this.loadPayPalButton();
+  }
+
+  loadPayPalButton() {
+    if (window['paypal'] !== undefined) {
+      window['paypal'].Buttons({
+        createOrder: (data, actions) => {
+          return actions.order.create({
+            purchase_units: [{
+              amount: {
+                value: this.calculateTotalAmount()
+              }
+            }]
+          });
+        },
+        onApprove: (data, actions) => {
+          return actions.order.capture().then((details) => {
+            alert('Transaction completed by ' + details.payer.name.given_name);
+            // Aquí puedes realizar acciones adicionales después de la transacción
+          });
+        },
+        onError: (err) => {
+          console.error(err);
+          // Manejo de errores
+        }
+      }).render('#paypal-button-container');
+    }
+  }
+
+  calculateTotalAmount(): string {
+    // Implementa la lógica para calcular el total basado en los productos en el carrito
+    const totalAmount = this.products.reduce((acc, product) => acc + product.price, 0);
+    return totalAmount.toFixed(2); // Asegúrate de que el formato sea compatible con PayPal
   }
 }
