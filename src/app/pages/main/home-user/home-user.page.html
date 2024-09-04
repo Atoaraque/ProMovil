@@ -25,7 +25,7 @@
         <div class="name">{{ p.name }}</div>
         <div class="data">
           <strong>Precio:</strong> {{ p.price | currency: 'USD' }} <br>
-          
+
           <div class="quantity-controls" *ngIf="p.showQuantityControls">
             <ion-button (click)="decreaseQuantity(p)" [disabled]="p.quantity <= 0">-</ion-button>
             <span>{{ p.quantity }}</span>
@@ -37,11 +37,10 @@
     </ion-card>
   </div>
 
-<!-- Texto antes del mapa -->
-<div class="map-text" *ngIf="showMap && deliveryOption === 'tienda'">
-  <p>Puedes encontrarnos en nuestros puntos de venta aquí:</p>
-</div>
-
+  <!-- Texto antes del mapa -->
+  <div class="map-text" *ngIf="showMap && deliveryOption === 'tienda'">
+    <p>Puedes encontrarnos en nuestros puntos de venta aquí:</p>
+  </div>
 
   <div class="map-wrap" *ngIf="showMap && deliveryOption === 'tienda'">
     <div class="map" #map></div>
